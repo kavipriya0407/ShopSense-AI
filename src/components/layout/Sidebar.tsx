@@ -1,0 +1,144 @@
+import React from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  BarChart3,
+  Trophy,
+  ShoppingBag,
+  FileText,
+  Bot,
+  BrainCircuit,
+  Settings,
+  LogOut,
+  ShoppingCart,
+  ChevronLeft,
+  ShieldCheck,
+  Users,
+  AlertTriangle,
+  Layers,
+} from 'lucide-react';
+
+interface SidebarProps {
+  collapsed: boolean;
+  onToggleCollapse: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isAdminMode = location.pathname.startsWith('/admin');
+
+  const vendorNavItems = [
+    { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { label: 'Analytics', path: '/analytics', icon: BarChart3 },
+    { label: 'Benchmarking', path: '/benchmarking', icon: Trophy },
+    { label: 'Orders', path: '/orders', icon: ShoppingBag },
+    { label: 'Reports', path: '/reports', icon: FileText },
+    { label: 'AI Assistant', path: '/ai-assistant', icon: Bot },
+    { label: 'AI Data Analyst', path: '/ai-data-analyst', icon: BrainCircuit },
+  ];
+
+  const adminNavItems = [
+    { label: 'Admin Overview', path: '/admin', icon: ShieldCheck },
+    { label: 'Vendor Accounts', path: '/admin/vendors', icon: Users },
+    { label: 'Disputes & Refunds', path: '/admin/disputes', icon: AlertTriangle },
+    { label: 'Global Categories', path: '/admin/categories', icon: Layers },
+  ];
+
+  const currentNavItems = isAdminMode ? adminNavItems : vendorNavItems;
+
+  return (
+    <aside
+      className={`fixed top-0 left-0 h-screen bg-[#0F172A] text-slate-300 transition-all duration-300 z-40 flex flex-col justify-between shadow-xl ${
+        collapsed ? 'w-16' : 'w-[220px]'
+      }`}
+    >
+      <div>
+        {/* Brand Header */}
+        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0 shadow-md ${
+                isAdminMode ? 'bg-indigo-600 shadow-indigo-500/20' : 'bg-blue-600 shadow-blue-500/20'
+              }`}
+            >
+              {isAdminMode ? <ShieldCheck className="w-4.5 h-4.5" /> : <ShoppingCart className="w-4.5 h-4.5" />}
+            </div>
+            {!collapsed && (
+              <div className="min-w-0">
+                <span className="font-bold text-white tracking-tight text-sm truncate block">
+                  {isAdminMode ? 'ShopSense Admin' : 'ShopSense'}
+                </span>
+                <span className="text-[10px] font-semibold text-slate-400 block -mt-1">
+                  {isAdminMode ? 'Super-Admin Console' : 'Vendor Analytics'}
+                </span>
+              </div>
+            )}
+          </div>
+          <button
+            onClick={onToggleCollapse}
+            className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors hidden sm:flex"
+            title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          >
+            <ChevronLeft className={`w-4 h-4 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {/* Main Navigation Links */}
+        <nav className="p-2.5 space-y-1 mt-2">
+          {currentNavItems.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === '/admin' || item.path === '/dashboard'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                    isActive
+                      ? isAdminMode
+                        ? 'bg-indigo-600 text-white font-semibold shadow-sm shadow-indigo-600/30'
+                        : 'bg-blue-600 text-white font-semibold shadow-sm shadow-blue-600/30'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  } ${collapsed ? 'justify-center px-0' : ''}`
+                }
+                title={collapsed ? item.label : undefined}
+              >
+                <IconComponent className="w-4.5 h-4.5 shrink-0" />
+                {!collapsed && <span className="truncate">{item.label}</span>}
+              </NavLink>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Bottom Actions */}
+      <div className="p-2.5 border-t border-slate-800/80 space-y-1">
+        <button
+          onClick={() => navigate(isAdminMode ? '/dashboard' : '/admin')}
+          className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-bold rounded-xl transition-all ${
+            isAdminMode
+              ? 'bg-blue-600/20 text-blue-400 hover:bg-blue-600/30'
+              : 'bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30'
+          } ${collapsed ? 'justify-center px-0' : ''}`}
+          title={collapsed ? (isAdminMode ? 'Switch to Vendor' : 'Switch to Admin') : undefined}
+        >
+          {isAdminMode ? <ShoppingCart className="w-4.5 h-4.5 shrink-0" /> : <ShieldCheck className="w-4.5 h-4.5 shrink-0" />}
+          {!collapsed && <span>{isAdminMode ? 'Vendor Portal' : 'Admin Portal'}</span>}
+        </button>
+
+        <button
+          onClick={() => navigate('/login')}
+          className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-xl transition-all ${
+            collapsed ? 'justify-center px-0' : ''
+          }`}
+          title={collapsed ? 'Logout' : undefined}
+        >
+          <LogOut className="w-4 h-4 shrink-0" />
+          {!collapsed && <span>Logout</span>}
+        </button>
+      </div>
+    </aside>
+  );
+};
