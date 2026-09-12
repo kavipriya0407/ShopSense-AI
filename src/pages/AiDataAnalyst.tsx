@@ -10,6 +10,8 @@ import {
   Clock,
   CheckCircle2,
   Database,
+  Code,
+  Zap,
 } from 'lucide-react';
 import { DateRangePicker } from '@/components/common/DateRangePicker';
 import { LineChartCard } from '@/components/charts/LineChartCard';
@@ -71,18 +73,20 @@ export const AiDataAnalyst: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Section: Search Input + Suggested Question Chips */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-3">
+      <div className="glass-card rounded-2xl p-5 border border-slate-800/80 space-y-3 shadow-xl">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BrainCircuit className="w-5 h-5 text-blue-600" />
-            <h2 className="text-base font-bold text-slate-900 tracking-tight">
-              Ask Anything About Your Data (RAG + PostgreSQL)
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-purple-600/30">
+              <BrainCircuit className="w-4 h-4" />
+            </div>
+            <h2 className="text-base font-display font-bold text-white tracking-tight">
+              Natural Language to SQL Data Analyst (PostgreSQL + RAG)
             </h2>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            <Database className="w-3.5 h-3.5 text-emerald-600" />
-            <span>PostgreSQL Engine Active</span>
+          <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-800/60">
+            <Database className="w-3.5 h-3.5" />
+            <span>PostgreSQL Schema Indexed</span>
           </div>
         </div>
 
@@ -97,13 +101,13 @@ export const AiDataAnalyst: React.FC = () => {
             type="text"
             value={queryInput}
             onChange={(e) => setQueryInput(e.target.value)}
-            placeholder="Ask RAG analyst: How is my revenue performing? Which products dropped?"
-            className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+            placeholder="Ask RAG analyst: 'Which audio products drove highest margin last month?'..."
+            className="flex-1 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
           />
           <button
             type="submit"
             disabled={!queryInput.trim() || isAnalyzing}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all shrink-0"
+            className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-40 text-white font-bold rounded-xl text-xs shadow-md shadow-purple-600/30 flex items-center justify-center gap-2 transition-all shrink-0 active:scale-95"
           >
             <span>Analyze</span>
             <Send className="w-3.5 h-3.5" />
@@ -112,12 +116,14 @@ export const AiDataAnalyst: React.FC = () => {
 
         {/* Suggested Question Chips */}
         <div className="flex items-center gap-2 overflow-x-auto pt-1">
-          <span className="text-[11px] font-semibold text-slate-400 shrink-0">Suggestions:</span>
+          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 font-mono">
+            Suggestions:
+          </span>
           {ANALYST_SUGGESTIONS.map((chip, idx) => (
             <button
               key={idx}
               onClick={() => handleQuerySubmit(chip)}
-              className="px-3 py-1 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 rounded-full text-xs font-medium whitespace-nowrap transition-colors border border-slate-200/60"
+              className="px-3 py-1 bg-slate-900 hover:bg-purple-950/60 hover:text-purple-300 hover:border-purple-500/40 text-slate-300 rounded-full text-[11px] font-semibold whitespace-nowrap transition-colors border border-slate-800"
             >
               💡 {chip}
             </button>
@@ -127,61 +133,75 @@ export const AiDataAnalyst: React.FC = () => {
 
       {/* Main Analysis Results & Right Sidebar */}
       {isAnalyzing ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-slate-100 shadow-sm space-y-4">
-          <Sparkles className="w-10 h-10 text-blue-600 mx-auto animate-spin" />
-          <h3 className="text-base font-bold text-slate-900">
-            Running PostgreSQL Query & Vector RAG Pipeline...
+        <div className="glass-card rounded-2xl p-16 text-center border border-slate-800/80 shadow-2xl space-y-4">
+          <Sparkles className="w-10 h-10 text-indigo-400 mx-auto animate-spin" />
+          <h3 className="text-base font-display font-bold text-white">
+            Compiling SQL AST & Vector RAG Pipeline...
           </h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
-            Aggregating PostgreSQL order transactions and running vector similarity scoring...
+            Aggregating PostgreSQL order transactions and computing cross-category elasticity...
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left 2 Columns */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div className="glass-card rounded-2xl p-6 shadow-xl border border-slate-800/80 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                 <div>
-                  <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                    Active Query Result
+                  <span className="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/20 px-2.5 py-0.5 rounded-full uppercase tracking-wide border border-purple-500/30">
+                    Active Query Execution
                   </span>
-                  <h3 className="text-base font-extrabold text-slate-900 mt-1">
+                  <h3 className="text-base font-display font-extrabold text-white mt-1.5">
                     "{activeQueryTitle}"
                   </h3>
                 </div>
 
                 <button
                   onClick={handleDownloadReport}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
                 >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download Report</span>
+                  <Download className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Download CSV</span>
                 </button>
               </div>
 
               {/* Summary */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700 leading-relaxed">
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 leading-relaxed font-medium">
                 <p>{analysisResult.summary}</p>
+              </div>
+
+              {/* Generated SQL Snippet Preview */}
+              <div className="p-3.5 rounded-xl bg-[#080D18] border border-slate-800 text-xs space-y-1.5">
+                <div className="flex items-center justify-between text-slate-400 text-[10px] font-mono">
+                  <span className="flex items-center gap-1">
+                    <Code className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Auto-Generated PostgreSQL SQL Query</span>
+                  </span>
+                  <span className="text-emerald-400 font-bold">Execution Time: 4.2ms</span>
+                </div>
+                <pre className="text-indigo-300 font-mono text-[11px] overflow-x-auto p-2 bg-slate-950/60 rounded-lg border border-slate-800/60">
+                  {`SELECT category, SUM(total_amount) AS revenue, COUNT(*) AS orders \nFROM orders JOIN products ON orders.product_id = products.id \nGROUP BY category ORDER BY revenue DESC;`}
+                </pre>
               </div>
 
               {/* 5 Stat Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 {analysisResult.statCards.map((stat, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block truncate">
+                  <div key={idx} className="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block truncate font-mono">
                       {stat.label}
                     </span>
-                    <span className="text-base font-extrabold text-slate-900 block mt-1">
+                    <span className="text-base font-display font-extrabold text-white block mt-1 font-mono">
                       {stat.value}
                     </span>
                     <div className="flex items-center gap-1 mt-1 text-[11px] font-bold">
                       {stat.trend === 'up' ? (
-                        <span className="text-emerald-600 inline-flex items-center gap-0.5">
+                        <span className="text-emerald-400 inline-flex items-center gap-0.5">
                           <TrendingUp className="w-3 h-3" /> {stat.change}
                         </span>
                       ) : (
-                        <span className="text-rose-600 inline-flex items-center gap-0.5">
+                        <span className="text-rose-400 inline-flex items-center gap-0.5">
                           <TrendingDown className="w-3 h-3" /> {stat.change}
                         </span>
                       )}
@@ -196,7 +216,7 @@ export const AiDataAnalyst: React.FC = () => {
               <LineChartCard
                 title="Sales Trend (Last 4 Weeks)"
                 data={analysisResult.salesTrend4Weeks}
-                lines={[{ key: 'revenue', name: 'Revenue', color: '#3B82F6' }]}
+                lines={[{ key: 'revenue', name: 'Revenue', color: '#8B5CF6' }]}
                 xAxisKey="week"
                 height={200}
                 formatYAxis={(v) => `$${v}`}
@@ -213,39 +233,39 @@ export const AiDataAnalyst: React.FC = () => {
 
             {/* Contributing Factors & Drops */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-                <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-3">
+              <div className="glass-card rounded-2xl p-5 border border-slate-800/80 shadow-lg">
+                <h3 className="text-sm font-display font-bold text-white tracking-tight mb-3">
                   Top Contributing Factors
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead>
-                      <tr className="text-slate-400 border-b border-slate-100">
+                      <tr className="text-slate-400 border-b border-slate-800">
                         <th className="pb-2">Factor</th>
                         <th className="pb-2">Impact</th>
                         <th className="pb-2 text-right">Change %</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-50">
+                    <tbody className="divide-y divide-slate-800/60">
                       {analysisResult.contributingFactors.map((f) => (
-                        <tr key={f.id} className="hover:bg-slate-50">
-                          <td className="py-2.5 font-semibold text-slate-900">{f.factor}</td>
+                        <tr key={f.id} className="hover:bg-slate-800/40">
+                          <td className="py-2.5 font-semibold text-slate-200">{f.factor}</td>
                           <td className="py-2.5">
                             <span
-                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono ${
                                 f.impact === 'High'
-                                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                                  ? 'bg-rose-950/60 text-rose-400 border border-rose-800/60'
                                   : f.impact === 'Medium'
-                                  ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                                  : 'bg-blue-50 text-blue-700 border border-blue-200'
+                                  ? 'bg-amber-950/60 text-amber-400 border border-amber-800/60'
+                                  : 'bg-indigo-950/60 text-indigo-400 border border-indigo-800/60'
                               }`}
                             >
                               {f.impact}
                             </span>
                           </td>
                           <td
-                            className={`py-2.5 text-right font-bold ${
-                              f.change.startsWith('+') ? 'text-emerald-600' : 'text-rose-600'
+                            className={`py-2.5 text-right font-mono font-bold ${
+                              f.change.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'
                             }`}
                           >
                             {f.change}
@@ -257,27 +277,27 @@ export const AiDataAnalyst: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-                <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-3">
+              <div className="glass-card rounded-2xl p-5 border border-slate-800/80 shadow-lg">
+                <h3 className="text-sm font-display font-bold text-white tracking-tight mb-3">
                   Top Products with Sales Drop
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead>
-                      <tr className="text-slate-400 border-b border-slate-100">
+                      <tr className="text-slate-400 border-b border-slate-800">
                         <th className="pb-2">Product</th>
                         <th className="pb-2 text-right">Sales Last Wk</th>
                         <th className="pb-2 text-right">Change %</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-50">
+                    <tbody className="divide-y divide-slate-800/60">
                       {analysisResult.salesDropProducts.map((p) => (
-                        <tr key={p.id} className="hover:bg-slate-50">
-                          <td className="py-2.5 font-medium text-slate-900">{p.product}</td>
-                          <td className="py-2.5 text-right font-semibold text-slate-800">
+                        <tr key={p.id} className="hover:bg-slate-800/40">
+                          <td className="py-2.5 font-medium text-slate-200">{p.product}</td>
+                          <td className="py-2.5 text-right font-mono font-semibold text-white">
                             {p.salesLastWeek}
                           </td>
-                          <td className="py-2.5 text-right font-bold text-rose-600">
+                          <td className="py-2.5 text-right font-mono font-bold text-rose-400">
                             {p.change}
                           </td>
                         </tr>
@@ -291,38 +311,38 @@ export const AiDataAnalyst: React.FC = () => {
 
           {/* Right Sidebar */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-700">Data Scope:</span>
+            <div className="glass-card rounded-2xl p-4 border border-slate-800/80 flex items-center justify-between shadow-lg">
+              <span className="text-xs font-bold text-slate-300">Data Scope:</span>
               <DateRangePicker />
             </div>
 
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 space-y-2">
-              <div className="flex items-center gap-1.5 font-bold text-slate-800 text-xs">
-                <Info className="w-4 h-4 text-blue-600" />
+            <div className="glass-card rounded-2xl p-5 border border-slate-800/80 space-y-2 shadow-lg">
+              <div className="flex items-center gap-1.5 font-display font-bold text-white text-xs">
+                <Info className="w-4 h-4 text-purple-400" />
                 <span>RAG Pipeline Explanation</span>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 {analysisResult.explanation}
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 space-y-3">
-              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+            <div className="glass-card rounded-2xl p-5 border border-slate-800/80 space-y-3 shadow-lg">
+              <h4 className="text-xs font-display font-bold text-white uppercase tracking-wider">
                 Key Insights
               </h4>
-              <ul className="space-y-2.5 text-xs text-slate-600">
+              <ul className="space-y-2.5 text-xs text-slate-300">
                 {analysisResult.keyInsights.map((insight, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                     <span>{insight}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 space-y-3">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+            <div className="glass-card rounded-2xl p-5 border border-slate-800/80 space-y-3 shadow-lg">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h4 className="text-xs font-display font-bold text-white uppercase tracking-wider">
                   Query History
                 </h4>
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
@@ -333,12 +353,12 @@ export const AiDataAnalyst: React.FC = () => {
                   <div
                     key={q.id}
                     onClick={() => handleQuerySubmit(q.question)}
-                    className="p-2 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100"
+                    className="p-2 rounded-xl hover:bg-slate-800/60 cursor-pointer transition-colors border border-transparent hover:border-slate-800"
                   >
-                    <p className="font-semibold text-slate-700 hover:text-blue-600 truncate">
+                    <p className="font-semibold text-slate-300 hover:text-purple-300 truncate">
                       {q.question}
                     </p>
-                    <span className="text-[10px] text-slate-400">{q.timestamp}</span>
+                    <span className="text-[10px] text-slate-500 font-mono">{q.timestamp}</span>
                   </div>
                 ))}
               </div>
@@ -349,3 +369,4 @@ export const AiDataAnalyst: React.FC = () => {
     </div>
   );
 };
+

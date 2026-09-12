@@ -10,23 +10,23 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case 'delivered':
       case 'completed':
       case 'paid':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        return 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60 shadow-xs';
       case 'processing':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
+        return 'bg-blue-950/60 text-blue-400 border-blue-800/60 shadow-xs';
       case 'pending':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
+        return 'bg-amber-950/60 text-amber-400 border-amber-800/60 shadow-xs';
       case 'cancelled':
-        return 'bg-rose-50 text-rose-700 border-rose-200';
+        return 'bg-rose-950/60 text-rose-400 border-rose-800/60 shadow-xs';
       case 'refunded':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
+        return 'bg-purple-950/60 text-purple-400 border-purple-800/60 shadow-xs';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
+        return 'bg-slate-800 text-slate-300 border-slate-700';
     }
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getBadgeStyle(
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border font-mono ${getBadgeStyle(
         status
       )}`}
     >
@@ -34,3 +34,4 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     </span>
   );
 };
+

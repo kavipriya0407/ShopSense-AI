@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Download, X, Check, Clock, Package, CreditCard, User, MapPin } from 'lucide-react';
+import { Search, Download, X, Check, Clock, Package, CreditCard, User, MapPin, Sparkles } from 'lucide-react';
 import { DateRangePicker } from '@/components/common/DateRangePicker';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { DataTable, Column } from '@/components/common/DataTable';
@@ -43,20 +43,20 @@ export const Orders: React.FC = () => {
     {
       header: 'Order ID',
       cell: (row) => (
-        <span className="font-bold text-slate-900">{row.id}</span>
+        <span className="font-mono font-bold text-cyan-400">{row.id}</span>
       ),
     },
     {
       header: 'Order Date',
       cell: (row) => (
-        <span className="text-slate-500 font-medium text-[11px]">{row.orderDate}</span>
+        <span className="text-slate-400 font-medium text-[11px]">{row.orderDate}</span>
       ),
     },
     {
       header: 'Customer',
       cell: (row) => (
         <div>
-          <p className="font-semibold text-slate-900">{row.customerName}</p>
+          <p className="font-semibold text-slate-100">{row.customerName}</p>
           <p className="text-[11px] text-slate-400 truncate max-w-[140px]">{row.customerEmail}</p>
         </div>
       ),
@@ -64,18 +64,18 @@ export const Orders: React.FC = () => {
     {
       header: 'Products',
       cell: (row) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1.5">
           {row.products.slice(0, 2).map((p, idx) => (
             <div
               key={idx}
-              className="w-7 h-7 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 truncate p-0.5"
+              className="w-7 h-7 rounded-lg bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-[11px] font-bold text-slate-300 truncate p-0.5"
               title={p.name}
             >
               📦
             </div>
           ))}
           {row.products.length > 2 && (
-            <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-md">
+            <span className="text-[10px] font-bold text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded-md border border-slate-700/50">
               +{row.products.length - 2}
             </span>
           )}
@@ -85,12 +85,12 @@ export const Orders: React.FC = () => {
     {
       header: 'Items',
       accessorKey: 'itemsCount',
-      className: 'text-center',
+      className: 'text-center font-mono',
     },
     {
       header: 'Order Amount',
       cell: (row) => (
-        <span className="font-bold text-slate-900">{row.orderAmount}</span>
+        <span className="font-bold text-slate-100 font-mono">{row.orderAmount}</span>
       ),
     },
     {
@@ -106,7 +106,7 @@ export const Orders: React.FC = () => {
       cell: (row) => (
         <button
           onClick={() => setSelectedOrder(row)}
-          className="px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-100 hover:bg-blue-100 rounded-lg transition-colors"
+          className="px-2.5 py-1 text-xs font-semibold text-cyan-400 bg-cyan-950/40 border border-cyan-500/30 hover:bg-cyan-900/40 rounded-lg transition-all"
         >
           View Details
         </button>
@@ -117,7 +117,7 @@ export const Orders: React.FC = () => {
   return (
     <div className="space-y-6 relative">
       {/* Top Filter Bar */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Search Bar */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -125,19 +125,19 @@ export const Orders: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search by Order ID / Customer / Email"
-            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all"
+            placeholder="Search Order ID / Customer / Email"
+            className="w-full pl-9 pr-4 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500 transition-all"
           />
         </div>
 
         {/* Filters & Export CSV */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
           <DateRangePicker />
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="px-3 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-xs font-medium text-slate-200 hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
           >
             <option value="All Status">All Status</option>
             <option value="Delivered">Delivered</option>
@@ -148,7 +148,7 @@ export const Orders: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo transition-all"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
@@ -156,17 +156,17 @@ export const Orders: React.FC = () => {
         </div>
       </div>
 
-      {/* 5 Summary Cards */}
+      {/* 6 Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {ORDERS_SUMMARY_CARDS.map((card, idx) => (
-          <div key={idx} className="bg-white rounded-xl p-3.5 shadow-sm border border-slate-100">
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block truncate">
+          <div key={idx} className="glass-card rounded-2xl p-3.5 hover:border-slate-700 transition-all">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block truncate">
               {card.label}
             </span>
-            <span className="text-lg font-extrabold text-slate-900 block mt-0.5">
+            <span className="text-lg font-black text-white block mt-0.5 font-outfit">
               {card.value}
             </span>
-            <span className={`text-[10px] font-semibold mt-1 inline-block ${card.trendType === 'up' ? 'text-emerald-600' : 'text-rose-600'}`}>
+            <span className={`text-[10px] font-semibold mt-1 inline-block ${card.trendType === 'up' ? 'text-emerald-400' : 'text-rose-400'}`}>
               {card.trendType === 'up' ? '↑' : '↓'} {card.trend}
             </span>
           </div>
@@ -174,23 +174,26 @@ export const Orders: React.FC = () => {
       </div>
 
       {/* Orders Main Table */}
-      <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-        <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-4">
-          Orders List
+      <div className="glass-card rounded-2xl p-5">
+        <h3 className="text-sm font-bold text-slate-100 tracking-tight mb-4 flex items-center justify-between">
+          <span>Live Marketplace Orders Stream</span>
+          <span className="text-xs font-normal text-slate-400">
+            {filteredOrders.length} order{filteredOrders.length === 1 ? '' : 's'} matching
+          </span>
         </h3>
         <DataTable data={filteredOrders} columns={columns} pageSize={7} />
       </div>
 
       {/* Right Slide-in Order Details Panel */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="w-full max-w-xl bg-white h-full shadow-2xl overflow-y-auto p-6 flex flex-col justify-between border-l border-slate-200">
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-xl bg-slate-900/95 border-l border-slate-800/90 h-full shadow-2xl overflow-y-auto p-6 flex flex-col justify-between text-slate-200">
             <div>
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-extrabold text-slate-900">
+                    <h3 className="text-lg font-extrabold text-white font-mono">
                       {selectedOrder.id}
                     </h3>
                     <StatusBadge status={selectedOrder.orderStatus} />
@@ -199,7 +202,7 @@ export const Orders: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -208,57 +211,57 @@ export const Orders: React.FC = () => {
               {/* Customer Info & Order Summary Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {/* Customer Info */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-slate-700 font-bold mb-2">
-                    <User className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/60 text-xs space-y-2">
+                  <div className="flex items-center gap-1.5 text-cyan-400 font-bold mb-2">
+                    <User className="w-3.5 h-3.5" />
                     <span>Customer Information</span>
                   </div>
-                  <p><strong className="text-slate-500 font-normal">Name:</strong> {selectedOrder.customerName}</p>
-                  <p><strong className="text-slate-500 font-normal">Email:</strong> {selectedOrder.customerEmail}</p>
-                  <p><strong className="text-slate-500 font-normal">Phone:</strong> {selectedOrder.customerPhone}</p>
-                  <p><strong className="text-slate-500 font-normal">Address:</strong> {selectedOrder.customerAddress}</p>
+                  <p><strong className="text-slate-400 font-normal">Name:</strong> {selectedOrder.customerName}</p>
+                  <p><strong className="text-slate-400 font-normal">Email:</strong> {selectedOrder.customerEmail}</p>
+                  <p><strong className="text-slate-400 font-normal">Phone:</strong> {selectedOrder.customerPhone}</p>
+                  <p><strong className="text-slate-400 font-normal">Address:</strong> {selectedOrder.customerAddress}</p>
                 </div>
 
                 {/* Order Summary */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-slate-700 font-bold mb-2">
-                    <CreditCard className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/60 text-xs space-y-1.5">
+                  <div className="flex items-center gap-1.5 text-indigo-400 font-bold mb-2">
+                    <CreditCard className="w-3.5 h-3.5" />
                     <span>Order Summary</span>
                   </div>
-                  <div className="flex justify-between"><span>Items:</span><span>{selectedOrder.itemsCount}</span></div>
-                  <div className="flex justify-between"><span>Subtotal:</span><span>{selectedOrder.subtotal}</span></div>
-                  <div className="flex justify-between text-emerald-600"><span>Discount:</span><span>{selectedOrder.discount}</span></div>
-                  <div className="flex justify-between"><span>Shipping:</span><span>{selectedOrder.shipping}</span></div>
-                  <div className="flex justify-between"><span>Tax (8%):</span><span>{selectedOrder.tax}</span></div>
-                  <div className="flex justify-between pt-1 border-t border-slate-200 font-bold text-slate-900 text-sm">
+                  <div className="flex justify-between"><span>Items:</span><span className="font-mono">{selectedOrder.itemsCount}</span></div>
+                  <div className="flex justify-between"><span>Subtotal:</span><span className="font-mono">{selectedOrder.subtotal}</span></div>
+                  <div className="flex justify-between text-emerald-400"><span>Discount:</span><span className="font-mono">{selectedOrder.discount}</span></div>
+                  <div className="flex justify-between"><span>Shipping:</span><span className="font-mono">{selectedOrder.shipping}</span></div>
+                  <div className="flex justify-between"><span>Tax (8%):</span><span className="font-mono">{selectedOrder.tax}</span></div>
+                  <div className="flex justify-between pt-2 border-t border-slate-700/80 font-bold text-white text-sm">
                     <span>Total Revenue:</span>
-                    <span className="text-blue-600">{selectedOrder.orderAmount}</span>
+                    <span className="text-cyan-400 font-mono">{selectedOrder.orderAmount}</span>
                   </div>
                 </div>
               </div>
 
               {/* Products Table */}
               <div className="mb-6">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">
-                  Products
+                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  Products In Order
                 </h4>
-                <div className="border border-slate-100 rounded-xl overflow-hidden">
+                <div className="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-900/40">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+                    <thead className="bg-slate-800/80 text-slate-400 font-semibold border-b border-slate-700/60">
                       <tr>
-                        <th className="px-3 py-2">Product</th>
-                        <th className="px-3 py-2 text-center">Qty</th>
-                        <th className="px-3 py-2 text-right">Unit Price</th>
-                        <th className="px-3 py-2 text-right">Subtotal</th>
+                        <th className="px-3 py-2.5">Product</th>
+                        <th className="px-3 py-2.5 text-center">Qty</th>
+                        <th className="px-3 py-2.5 text-right">Unit Price</th>
+                        <th className="px-3 py-2.5 text-right">Subtotal</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-800/60">
                       {selectedOrder.products.map((prod, idx) => (
                         <tr key={idx}>
-                          <td className="px-3 py-2 font-medium text-slate-800">{prod.name}</td>
-                          <td className="px-3 py-2 text-center text-slate-600">{prod.quantity}</td>
-                          <td className="px-3 py-2 text-right text-slate-600">{prod.unitPrice}</td>
-                          <td className="px-3 py-2 text-right font-semibold text-slate-900">{prod.subtotal}</td>
+                          <td className="px-3 py-2.5 font-medium text-slate-200">{prod.name}</td>
+                          <td className="px-3 py-2.5 text-center text-slate-400 font-mono">{prod.quantity}</td>
+                          <td className="px-3 py-2.5 text-right text-slate-400 font-mono">{prod.unitPrice}</td>
+                          <td className="px-3 py-2.5 text-right font-semibold text-white font-mono">{prod.subtotal}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -269,33 +272,33 @@ export const Orders: React.FC = () => {
               {/* Payment Info & Status Timeline */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Payment Info */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5">
-                  <h4 className="font-bold text-slate-800 mb-2">Payment Information</h4>
-                  <p><span className="text-slate-500">Method:</span> <strong className="text-slate-800">{selectedOrder.paymentMethod}</strong></p>
-                  <p><span className="text-slate-500">Transaction ID:</span> <strong className="text-slate-800 font-mono">{selectedOrder.transactionId}</strong></p>
-                  <p><span className="text-slate-500">Status:</span> <StatusBadge status={selectedOrder.paymentStatus} /></p>
-                  <p><span className="text-slate-500">Paid On:</span> <span className="text-slate-700">{selectedOrder.paidOn}</span></p>
+                <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/60 text-xs space-y-2">
+                  <h4 className="font-bold text-slate-200 mb-2">Payment Details</h4>
+                  <p><span className="text-slate-400">Method:</span> <strong className="text-slate-100 ml-1">{selectedOrder.paymentMethod}</strong></p>
+                  <p><span className="text-slate-400">Transaction ID:</span> <strong className="text-cyan-400 font-mono ml-1">{selectedOrder.transactionId}</strong></p>
+                  <p className="flex items-center gap-1.5"><span className="text-slate-400">Status:</span> <StatusBadge status={selectedOrder.paymentStatus} /></p>
+                  <p><span className="text-slate-400">Paid On:</span> <span className="text-slate-300 ml-1">{selectedOrder.paidOn}</span></p>
                 </div>
 
                 {/* Vertical Order Status Timeline */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-                  <h4 className="font-bold text-slate-800 mb-3">Order Status Timeline</h4>
-                  <div className="space-y-3 relative pl-4 border-l-2 border-slate-200">
+                <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/60 text-xs">
+                  <h4 className="font-bold text-slate-200 mb-3">Order Status Timeline</h4>
+                  <div className="space-y-3 relative pl-4 border-l-2 border-slate-700">
                     {selectedOrder.timeline.map((step, idx) => (
                       <div key={idx} className="relative">
                         <span
                           className={`absolute -left-[21px] top-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] ${
                             step.completed
-                              ? 'bg-emerald-500 text-white'
-                              : 'bg-slate-300 text-slate-500'
+                              ? 'bg-emerald-500 text-white shadow-[0_0_8px_rgba(16,185,129,0.5)]'
+                              : 'bg-slate-700 text-slate-500'
                           }`}
                         >
                           {step.completed ? <Check className="w-2.5 h-2.5 stroke-[3]" /> : '•'}
                         </span>
-                        <p className={`font-semibold ${step.completed ? 'text-slate-900' : 'text-slate-400'}`}>
+                        <p className={`font-semibold ${step.completed ? 'text-white' : 'text-slate-500'}`}>
                           {step.title}
                         </p>
-                        <p className="text-[10px] text-slate-400">{step.timestamp}</p>
+                        <p className="text-[10px] text-slate-400 font-mono">{step.timestamp}</p>
                       </div>
                     ))}
                   </div>
@@ -303,10 +306,10 @@ export const Orders: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 mt-6 text-right">
+            <div className="pt-4 border-t border-slate-800 mt-6 text-right">
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-colors"
+                className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/80"
               >
                 Close Drawer
               </button>
@@ -317,3 +320,4 @@ export const Orders: React.FC = () => {
     </div>
   );
 };
+

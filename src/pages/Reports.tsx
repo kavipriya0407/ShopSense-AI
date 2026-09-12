@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, RotateCcw, Info, CheckCircle2 } from 'lucide-react';
+import { Download, RotateCcw, Info, CheckCircle2, FileText, Sparkles } from 'lucide-react';
 import { DateRangePicker } from '@/components/common/DateRangePicker';
 import { MetricCard } from '@/components/common/MetricCard';
 import { LineChartCard } from '@/components/charts/LineChartCard';
@@ -37,28 +37,28 @@ export const Reports: React.FC = () => {
   };
 
   const tableColumns: Column<ReportTableRow>[] = [
-    { header: 'Date', accessorKey: 'date', className: 'font-semibold text-slate-900' },
-    { header: 'Orders', accessorKey: 'orders', className: 'text-center' },
-    { header: 'Items Sold', accessorKey: 'itemsSold', className: 'text-center' },
-    { header: 'Revenue', accessorKey: 'revenue', className: 'text-right font-semibold text-slate-900' },
-    { header: 'Discounts', accessorKey: 'discounts', className: 'text-right text-rose-600' },
-    { header: 'Shipping', accessorKey: 'shipping', className: 'text-right text-slate-600' },
-    { header: 'Tax', accessorKey: 'tax', className: 'text-right text-slate-600' },
-    { header: 'Net Revenue', accessorKey: 'netRevenue', className: 'text-right font-bold text-blue-600' },
+    { header: 'Date', accessorKey: 'date', className: 'font-semibold text-slate-100 font-mono' },
+    { header: 'Orders', accessorKey: 'orders', className: 'text-center font-mono' },
+    { header: 'Items Sold', accessorKey: 'itemsSold', className: 'text-center font-mono' },
+    { header: 'Revenue', accessorKey: 'revenue', className: 'text-right font-semibold text-slate-100 font-mono' },
+    { header: 'Discounts', accessorKey: 'discounts', className: 'text-right text-rose-400 font-mono' },
+    { header: 'Shipping', accessorKey: 'shipping', className: 'text-right text-slate-400 font-mono' },
+    { header: 'Tax', accessorKey: 'tax', className: 'text-right text-slate-400 font-mono' },
+    { header: 'Net Revenue', accessorKey: 'netRevenue', className: 'text-right font-bold text-cyan-400 font-mono' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Top Filter Row */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+      <div className="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
           {/* Report Type Dropdown */}
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-slate-400 uppercase mb-1">Report Type</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Report Type</span>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value as any)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="px-3 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-xs font-medium text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
             >
               <option value="Sales Report">Sales Report</option>
               <option value="Orders Report">Orders Report</option>
@@ -68,7 +68,7 @@ export const Reports: React.FC = () => {
 
           {/* Date Range Picker */}
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-slate-400 uppercase mb-1">Date Range</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Date Range</span>
             <DateRangePicker value={dateRange} onChange={setDateRange} />
           </div>
         </div>
@@ -77,7 +77,7 @@ export const Reports: React.FC = () => {
         <div className="flex items-center gap-3 w-full md:w-auto justify-end pt-2 md:pt-0">
           <button
             onClick={handleResetFilters}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg text-xs font-medium text-slate-600 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-2 glass-card hover:bg-slate-800/80 border border-slate-700/60 rounded-xl text-xs font-medium text-slate-300 transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Filters</span>
@@ -85,7 +85,7 @@ export const Reports: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-lg text-xs font-bold shadow-md shadow-blue-500/20 transition-all"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo transition-all"
           >
             <Download className="w-4 h-4" />
             <span>Export CSV</span>
@@ -101,18 +101,21 @@ export const Reports: React.FC = () => {
       </div>
 
       {/* Report Tabs */}
-      <div className="border-b border-slate-200 flex gap-6 text-xs font-bold">
+      <div className="border-b border-slate-800/80 flex gap-6 text-xs font-bold">
         {['Sales Report', 'Orders Report', 'Products Report'].map((tab) => (
           <button
             key={tab}
             onClick={() => setReportType(tab as any)}
-            className={`pb-2.5 transition-all ${
+            className={`pb-2.5 transition-all relative ${
               reportType === tab
-                ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-slate-500 hover:text-slate-800'
+                ? 'text-cyan-400'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             {tab}
+            {reportType === tab && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
+            )}
           </button>
         ))}
       </div>
@@ -122,17 +125,20 @@ export const Reports: React.FC = () => {
         {/* Left Column: Chart & Detailed Table */}
         <div className="lg:col-span-2 space-y-6">
           <LineChartCard
-            title="Revenue Over Time"
+            title="Revenue Over Time (Aggregated)"
             data={DAILY_CHART_DATA}
-            lines={[{ key: 'revenue', name: 'Revenue', color: '#3B82F6' }]}
+            lines={[{ key: 'revenue', name: 'Gross Revenue', color: '#06B6D4' }]}
             height={220}
-            formatYAxis={(v) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
+            formatYAxis={(v) => (v >= 1000 ? `$${v / 1000}K` : `$${v}`)}
           />
 
           {/* Sales Report Details Table */}
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-            <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-4">
-              Sales Report Details
+          <div className="glass-card rounded-2xl p-5">
+            <h3 className="text-sm font-bold text-slate-100 tracking-tight mb-4 flex items-center justify-between">
+              <span>{reportType} Details Breakdown</span>
+              <span className="text-xs font-mono text-cyan-400 bg-cyan-950/40 px-2.5 py-0.5 rounded-full border border-cyan-500/30">
+                Live Audited Data
+              </span>
             </h3>
             <DataTable data={SALES_REPORT_TABLE_DATA} columns={tableColumns} pageSize={5} />
           </div>
@@ -141,37 +147,38 @@ export const Reports: React.FC = () => {
         {/* Right Column: Donut Chart & About This Report Card */}
         <div className="space-y-6 flex flex-col justify-between">
           <DonutChart
-            title="Sales by Category"
+            title="Revenue by Category"
             data={CATEGORY_BREAKDOWN}
             centerLabel="$24,560.80"
-            centerSublabel="Total Revenue"
+            centerSublabel="Gross Sales"
           />
 
           {/* About This Report Info Card */}
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-            <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-2">
-              About This Report
+          <div className="glass-card rounded-2xl p-5">
+            <h3 className="text-sm font-bold text-slate-100 tracking-tight mb-2 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-indigo-400" />
+              <span>About This Financial Report</span>
             </h3>
-            <p className="text-xs text-slate-500 mb-4 leading-relaxed">
-              This sales report provides an overview of your store performance for the selected date range.
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              This financial ledger provides complete accounting attribution, net revenue realization, and tax breakdown for the chosen cycle.
             </p>
 
             <div className="space-y-3 text-xs">
-              <div className="flex items-start gap-2 text-slate-600">
-                <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                <span>All amounts are in USD</span>
+              <div className="flex items-start gap-2 text-slate-300">
+                <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                <span>All amounts are recorded in USD standardized currency</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-600">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span>Data is updated every 15 minutes</span>
+              <div className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <span>Synchronized with payment gateway webhooks</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-600">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span>Report includes all completed orders</span>
+              <div className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <span>Includes settled & completed customer checkout transactions</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-600">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span>Refunds are deducted from revenue</span>
+              <div className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <span>Platform commission & returns deducted from net profit</span>
               </div>
             </div>
           </div>
@@ -180,3 +187,4 @@ export const Reports: React.FC = () => {
     </div>
   );
 };
+

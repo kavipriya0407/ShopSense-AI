@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, UserCheck, ShieldAlert, Edit, Check, X, Download } from 'lucide-react';
+import { Search, UserCheck, ShieldAlert, Edit, Check, X, Download, Store } from 'lucide-react';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { DataTable, Column } from '@/components/common/DataTable';
 import { MOCK_VENDORS, VendorAccount } from '@/mock-data/adminData';
@@ -52,38 +52,38 @@ export const AdminVendors: React.FC = () => {
   const columns: Column<VendorAccount>[] = [
     {
       header: 'Vendor ID',
-      cell: (row) => <span className="font-mono font-bold text-slate-900">{row.id}</span>,
+      cell: (row) => <span className="font-mono font-bold text-cyan-400">{row.id}</span>,
     },
     {
       header: 'Store & Owner',
       cell: (row) => (
         <div>
-          <p className="font-extrabold text-slate-900">{row.storeName}</p>
+          <p className="font-bold text-slate-100">{row.storeName}</p>
           <p className="text-[11px] text-slate-400">{row.ownerName} ({row.email})</p>
         </div>
       ),
     },
-    { header: 'Joined Date', accessorKey: 'joinedDate' },
+    { header: 'Joined Date', accessorKey: 'joinedDate', className: 'text-slate-400 font-mono text-[11px]' },
     {
       header: 'Total GMV',
-      cell: (row) => <span className="font-extrabold text-slate-900">{row.totalGMV}</span>,
+      cell: (row) => <span className="font-extrabold text-white font-mono">{row.totalGMV}</span>,
     },
     {
       header: 'Orders',
       accessorKey: 'ordersCount',
-      className: 'text-center font-semibold',
+      className: 'text-center font-mono font-semibold',
     },
     {
       header: 'Commission %',
       cell: (row) => (
         <div className="flex items-center gap-1.5">
-          <span className="font-bold text-blue-600">{row.commissionRate}</span>
+          <span className="font-bold text-indigo-400 font-mono">{row.commissionRate}</span>
           <button
             onClick={() => {
               setEditingVendor(row);
               setNewCommission(row.commissionRate.replace('%', ''));
             }}
-            className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-700"
+            className="p-1 hover:bg-slate-800 rounded-md text-slate-400 hover:text-slate-200 transition-colors"
           >
             <Edit className="w-3 h-3" />
           </button>
@@ -101,7 +101,7 @@ export const AdminVendors: React.FC = () => {
           {row.status === 'Pending' && (
             <button
               onClick={() => handleStatusChange(row.id, 'Active')}
-              className="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
+              className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-all shadow-[0_0_8px_rgba(16,185,129,0.3)]"
             >
               Approve
             </button>
@@ -109,7 +109,7 @@ export const AdminVendors: React.FC = () => {
           {row.status === 'Active' && (
             <button
               onClick={() => handleStatusChange(row.id, 'Suspended')}
-              className="px-2 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 rounded-lg text-xs font-semibold transition-colors"
+              className="px-2.5 py-1 bg-rose-950/50 text-rose-300 hover:bg-rose-900/50 border border-rose-500/30 rounded-lg text-xs font-semibold transition-all"
             >
               Suspend
             </button>
@@ -117,7 +117,7 @@ export const AdminVendors: React.FC = () => {
           {row.status === 'Suspended' && (
             <button
               onClick={() => handleStatusChange(row.id, 'Active')}
-              className="px-2 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition-colors"
+              className="px-2.5 py-1 bg-cyan-950/50 text-cyan-300 hover:bg-cyan-900/50 border border-cyan-500/30 rounded-lg text-xs font-semibold transition-all"
             >
               Reactivate
             </button>
@@ -130,13 +130,14 @@ export const AdminVendors: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header & Search */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="glass-card rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            Vendor Account Management
+          <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <Store className="w-5 h-5 text-indigo-400" />
+            <span>Vendor Account Management</span>
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Approve new seller applications, set commission rates, and manage vendor access.
+          <p className="text-xs text-slate-400 font-medium mt-0.5">
+            Approve seller applications, configure custom commission rates, and manage merchant access.
           </p>
         </div>
 
@@ -148,13 +149,13 @@ export const AdminVendors: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search vendor store or email..."
-              className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-9 pr-3 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
             />
           </div>
 
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 flex items-center gap-1.5"
+            className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo flex items-center gap-1.5 transition-all"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Vendors</span>
@@ -163,50 +164,50 @@ export const AdminVendors: React.FC = () => {
       </div>
 
       {/* Vendors Table */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div className="glass-card rounded-2xl p-6">
         <DataTable data={filteredVendors} columns={columns} pageSize={6} />
       </div>
 
       {/* Commission Modal */}
       {editingVendor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-100 space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-              <h3 className="text-sm font-bold text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+          <div className="bg-slate-900/95 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-800 text-slate-200 space-y-4">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-sm font-bold text-white">
                 Update Commission Rate
               </h3>
-              <button onClick={() => setEditingVendor(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingVendor(null)} className="text-slate-400 hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div>
-              <p className="text-xs font-semibold text-slate-700">{editingVendor.storeName}</p>
-              <p className="text-[11px] text-slate-400">Vendor ID: {editingVendor.id}</p>
+              <p className="text-xs font-semibold text-slate-200">{editingVendor.storeName}</p>
+              <p className="text-[11px] text-slate-400 font-mono">Vendor ID: {editingVendor.id}</p>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
                 Commission Rate (%)
               </label>
               <input
                 type="number"
                 value={newCommission}
                 onChange={(e) => setNewCommission(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
             <div className="flex items-center gap-2 pt-2">
               <button
                 onClick={handleSaveCommission}
-                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs"
+                className="flex-1 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 text-white font-bold text-xs rounded-xl shadow-neon-indigo"
               >
                 Save Rate
               </button>
               <button
                 onClick={() => setEditingVendor(null)}
-                className="flex-1 py-2 bg-slate-100 text-slate-700 font-semibold text-xs rounded-xl hover:bg-slate-200"
+                className="flex-1 py-2 bg-slate-800 text-slate-300 font-semibold text-xs rounded-xl hover:bg-slate-700 border border-slate-700/80"
               >
                 Cancel
               </button>
@@ -217,3 +218,4 @@ export const AdminVendors: React.FC = () => {
     </div>
   );
 };
+

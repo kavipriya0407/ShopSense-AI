@@ -25,8 +25,8 @@ export const DonutChart: React.FC<DonutChartProps> = ({
   height = 200,
 }) => {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between h-full">
-      <h3 className="text-sm font-bold text-slate-800 tracking-tight mb-2">{title}</h3>
+    <div className="glass-card rounded-2xl p-5 border border-slate-800/80 flex flex-col justify-between h-full shadow-lg">
+      <h3 className="text-sm font-display font-bold text-white tracking-tight mb-2">{title}</h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 my-auto">
         <div className="relative" style={{ width: '100%', height }}>
@@ -38,8 +38,10 @@ export const DonutChart: React.FC<DonutChartProps> = ({
                 cy="50%"
                 innerRadius={50}
                 outerRadius={75}
-                paddingAngle={3}
+                paddingAngle={4}
                 dataKey="value"
+                stroke="#090D16"
+                strokeWidth={2}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -47,11 +49,12 @@ export const DonutChart: React.FC<DonutChartProps> = ({
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '8px',
-                  border: 'none',
+                  backgroundColor: '#0F172A',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   color: '#fff',
                   fontSize: '12px',
+                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
                 }}
               />
             </PieChart>
@@ -59,10 +62,10 @@ export const DonutChart: React.FC<DonutChartProps> = ({
 
           {/* Center Overlay Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-sm font-bold text-slate-900 leading-tight">
+            <span className="text-sm font-display font-black text-white leading-tight font-mono">
               {centerLabel}
             </span>
-            <span className="text-[10px] font-medium text-slate-400">
+            <span className="text-[10px] font-semibold text-slate-400">
               {centerSublabel}
             </span>
           </div>
@@ -71,19 +74,19 @@ export const DonutChart: React.FC<DonutChartProps> = ({
         {/* Legend Column */}
         <div className="space-y-2 text-xs">
           {data.map((item) => (
-            <div key={item.name} className="flex items-center justify-between gap-2">
+            <div key={item.name} className="flex items-center justify-between gap-2 p-1.5 rounded-lg hover:bg-slate-800/40 transition-colors">
               <div className="flex items-center gap-2 min-w-0">
                 <span
-                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-slate-600 font-medium truncate">{item.name}</span>
+                <span className="text-slate-300 font-medium truncate">{item.name}</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 {item.percentage && (
-                  <span className="text-slate-400 font-normal">{item.percentage}</span>
+                  <span className="text-slate-400 font-mono text-[11px]">{item.percentage}</span>
                 )}
-                <span className="font-semibold text-slate-900">
+                <span className="font-bold text-white font-mono">
                   {item.formattedValue || `$${item.value.toLocaleString()}`}
                 </span>
               </div>
@@ -94,3 +97,4 @@ export const DonutChart: React.FC<DonutChartProps> = ({
     </div>
   );
 };
+

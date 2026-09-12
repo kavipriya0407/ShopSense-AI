@@ -4,7 +4,7 @@ import { LineChartCard } from '@/components/charts/LineChartCard';
 import { BarChartCard } from '@/components/charts/BarChartCard';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { ADMIN_METRICS, MOCK_VENDORS, MOCK_DISPUTES } from '@/mock-data/adminData';
-import { ShieldCheck, UserCheck, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, UserCheck, AlertTriangle, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const AdminDashboard: React.FC = () => {
@@ -26,31 +26,36 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Admin Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <ShieldCheck className="w-5 h-5 text-blue-400" />
-            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">
-              Super-Admin Control Panel
+      <div className="relative overflow-hidden rounded-3xl p-6 lg:p-8 bg-gradient-to-r from-slate-900 via-indigo-950/80 to-purple-950/80 border border-indigo-500/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="p-1 rounded-lg bg-indigo-500/20 text-cyan-400 border border-indigo-500/30">
+              <ShieldCheck className="w-4 h-4" />
+            </span>
+            <span className="text-[11px] font-extrabold text-cyan-400 uppercase tracking-widest font-mono">
+              Super-Admin Command Nexus
             </span>
           </div>
-          <h2 className="text-2xl font-extrabold tracking-tight">
-            MarketPlace Master Administration
+          <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tight font-outfit">
+            Marketplace Master Administration
           </h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-xl">
-            Monitor overall marketplace Gross Merchandise Value (GMV), vendor applications, commission earnings, and platform dispute resolutions.
+          <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
+            Monitor ecosystem Gross Merchandise Value (GMV), vendor onboarding queues, automated revenue rake, and platform dispute resolutions.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0 relative z-10">
           <Link
             to="/admin/vendors"
-            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/30 transition-all flex items-center gap-1.5"
+            className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo transition-all flex items-center gap-2"
           >
             <UserCheck className="w-4 h-4" />
             <span>Manage 142 Vendors</span>
           </Link>
         </div>
+
+        {/* Ambient background glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* 5 Admin Summary Metrics */}
@@ -69,7 +74,7 @@ export const AdminDashboard: React.FC = () => {
             data={platformRevenueTrend}
             lines={[
               { key: 'revenue', name: 'Total GMV (USD)', color: '#10B981' },
-              { key: 'commission', name: 'Net Commission (USD)', color: '#3B82F6' },
+              { key: 'commission', name: 'Net Commission (USD)', color: '#6366F1' },
             ]}
             xAxisKey="date"
             height={260}
@@ -82,7 +87,7 @@ export const AdminDashboard: React.FC = () => {
           <BarChartCard
             title="Top Vendors by Monthly GMV"
             data={vendorGMVBreakdown}
-            bars={[{ key: 'store', name: 'GMV ($)', color: '#8B5CF6' }]}
+            bars={[{ key: 'store', name: 'GMV ($)', color: '#A855F7' }]}
             xAxisKey="period"
             height={260}
           />
@@ -92,39 +97,39 @@ export const AdminDashboard: React.FC = () => {
       {/* Tables: Vendor Applications & Platform Disputes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Vendor Applications Queue */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              <h3 className="text-sm font-bold text-slate-100 tracking-tight">
                 Vendor Application Queue
               </h3>
-              <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+              <span className="text-xs font-semibold text-amber-400 bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-500/30 font-mono">
                 5 Pending Reviews
               </span>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs text-slate-300">
                 <thead>
-                  <tr className="text-slate-400 font-semibold border-b border-slate-100">
-                    <th className="pb-2">Store</th>
-                    <th className="pb-2">Owner</th>
-                    <th className="pb-2 text-center">Status</th>
-                    <th className="pb-2 text-right">Action</th>
+                  <tr className="text-slate-400 font-semibold border-b border-slate-700/60">
+                    <th className="pb-3">Store</th>
+                    <th className="pb-3">Owner</th>
+                    <th className="pb-3 text-center">Status</th>
+                    <th className="pb-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-slate-800/60">
                   {MOCK_VENDORS.map((v) => (
-                    <tr key={v.id} className="hover:bg-slate-50">
-                      <td className="py-2.5 font-bold text-slate-900">{v.storeName}</td>
-                      <td className="py-2.5 text-slate-600 font-medium">{v.ownerName}</td>
-                      <td className="py-2.5 text-center">
+                    <tr key={v.id} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="py-3 font-bold text-white">{v.storeName}</td>
+                      <td className="py-3 text-slate-400 font-medium">{v.ownerName}</td>
+                      <td className="py-3 text-center">
                         <StatusBadge status={v.status} />
                       </td>
-                      <td className="py-2.5 text-right">
+                      <td className="py-3 text-right">
                         <button
                           onClick={() => alert(`Reviewing application for ${v.storeName}`)}
-                          className="px-2.5 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-semibold transition-colors"
+                          className="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border border-indigo-500/30 rounded-lg text-xs font-semibold transition-all"
                         >
                           Review
                         </button>
@@ -136,40 +141,41 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 mt-4 text-right">
-            <Link to="/admin/vendors" className="text-xs font-bold text-blue-600 hover:underline">
-              View All Vendors →
+          <div className="pt-3 border-t border-slate-800/60 mt-4 text-right">
+            <Link to="/admin/vendors" className="text-xs font-bold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1">
+              <span>View All 142 Vendors</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
 
         {/* Platform Disputes */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              <h3 className="text-sm font-bold text-slate-100 tracking-tight">
                 Platform Customer Disputes
               </h3>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <AlertTriangle className="w-4 h-4 text-amber-400" />
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs text-slate-300">
                 <thead>
-                  <tr className="text-slate-400 font-semibold border-b border-slate-100">
-                    <th className="pb-2">Dispute ID</th>
-                    <th className="pb-2">Vendor</th>
-                    <th className="pb-2">Issue</th>
-                    <th className="pb-2 text-right">Status</th>
+                  <tr className="text-slate-400 font-semibold border-b border-slate-700/60">
+                    <th className="pb-3">Dispute ID</th>
+                    <th className="pb-3">Vendor</th>
+                    <th className="pb-3">Issue</th>
+                    <th className="pb-3 text-right">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-slate-800/60">
                   {MOCK_DISPUTES.map((d) => (
-                    <tr key={d.id} className="hover:bg-slate-50">
-                      <td className="py-2.5 font-mono font-bold text-slate-900">{d.id}</td>
-                      <td className="py-2.5 text-slate-700 font-medium truncate max-w-[100px]">{d.vendorName}</td>
-                      <td className="py-2.5 text-slate-500 truncate max-w-[130px]">{d.issue}</td>
-                      <td className="py-2.5 text-right">
+                    <tr key={d.id} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="py-3 font-mono font-bold text-cyan-400">{d.id}</td>
+                      <td className="py-3 text-slate-200 font-medium truncate max-w-[100px]">{d.vendorName}</td>
+                      <td className="py-3 text-slate-400 truncate max-w-[130px]">{d.issue}</td>
+                      <td className="py-3 text-right">
                         <StatusBadge status={d.status} />
                       </td>
                     </tr>
@@ -179,9 +185,10 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 mt-4 text-right">
-            <Link to="/admin/disputes" className="text-xs font-bold text-blue-600 hover:underline">
-              View All Disputes →
+          <div className="pt-3 border-t border-slate-800/60 mt-4 text-right">
+            <Link to="/admin/disputes" className="text-xs font-bold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1">
+              <span>View All Disputes</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -189,3 +196,4 @@ export const AdminDashboard: React.FC = () => {
     </div>
   );
 };
+

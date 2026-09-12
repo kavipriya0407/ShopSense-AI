@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GLOBAL_CATEGORIES, GlobalCategory } from '@/mock-data/adminData';
-import { Layers, Plus, Edit, Check } from 'lucide-react';
+import { Layers, Plus, Edit, Check, X } from 'lucide-react';
 import { StatusBadge } from '@/components/common/StatusBadge';
 
 export const AdminCategories: React.FC = () => {
@@ -27,50 +27,53 @@ export const AdminCategories: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
+      <div className="glass-card rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            Global Product Categories & Commission Tiers
+          <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <Layers className="w-5 h-5 text-indigo-400" />
+            <span>Global Product Categories & Commission Tiers</span>
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Manage marketplace product taxonomy, active category catalogs, and default commission rates.
+          <p className="text-xs text-slate-400 font-medium mt-0.5">
+            Manage marketplace product taxonomy, category catalogs, and tier commission rates.
           </p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 flex items-center gap-1.5"
+          className="px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo flex items-center gap-1.5 transition-all"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Category</span>
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+      <div className="glass-card rounded-2xl p-6">
+        <div className="overflow-x-auto rounded-xl border border-slate-700/60 bg-slate-900/40">
+          <table className="w-full text-left text-xs text-slate-300">
             <thead>
-              <tr className="text-slate-400 font-semibold border-b border-slate-100">
-                <th className="pb-3">Category Name</th>
-                <th className="pb-3 text-center">Products Count</th>
-                <th className="pb-3 text-center">Active Vendors</th>
-                <th className="pb-3 text-right">Total Category Sales</th>
-                <th className="pb-3 text-right">Commission Rate</th>
-                <th className="pb-3 text-center">Status</th>
+              <tr className="bg-slate-800/80 text-slate-400 font-semibold border-b border-slate-700/60">
+                <th className="px-4 py-3">Category Name</th>
+                <th className="px-4 py-3 text-center">Products Count</th>
+                <th className="px-4 py-3 text-center">Active Vendors</th>
+                <th className="px-4 py-3 text-right">Total Category Sales</th>
+                <th className="px-4 py-3 text-right">Commission Rate</th>
+                <th className="px-4 py-3 text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/60">
               {categories.map((c) => (
-                <tr key={c.id} className="hover:bg-slate-50">
-                  <td className="py-3 font-extrabold text-slate-900 flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-blue-600" />
+                <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="px-4 py-3 font-extrabold text-white flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-cyan-400">
+                      <Layers className="w-3.5 h-3.5" />
+                    </div>
                     <span>{c.name}</span>
                   </td>
-                  <td className="py-3 text-center font-semibold text-slate-700">{c.totalProducts}</td>
-                  <td className="py-3 text-center font-semibold text-slate-700">{c.activeVendors}</td>
-                  <td className="py-3 text-right font-extrabold text-slate-900">{c.totalSales}</td>
-                  <td className="py-3 text-right font-bold text-blue-600">{c.commissionPct}</td>
-                  <td className="py-3 text-center">
+                  <td className="px-4 py-3 text-center font-mono font-semibold text-slate-300">{c.totalProducts}</td>
+                  <td className="px-4 py-3 text-center font-mono font-semibold text-slate-300">{c.activeVendors}</td>
+                  <td className="px-4 py-3 text-right font-extrabold text-white font-mono">{c.totalSales}</td>
+                  <td className="px-4 py-3 text-right font-bold text-cyan-400 font-mono">{c.commissionPct}</td>
+                  <td className="px-4 py-3 text-center">
                     <StatusBadge status={c.status} />
                   </td>
                 </tr>
@@ -81,40 +84,45 @@ export const AdminCategories: React.FC = () => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-100 space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">
-              Add Marketplace Category
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+          <div className="bg-slate-900/95 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-800 text-slate-200 space-y-4">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+              <h3 className="text-sm font-bold text-white">
+                Add Marketplace Category
+              </h3>
+              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Category Name</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">Category Name</label>
               <input
                 type="text"
                 value={newCatName}
                 onChange={(e) => setNewCatName(e.target.value)}
                 placeholder="e.g. Health & Beauty"
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Default Commission (%)</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">Default Commission (%)</label>
               <input
                 type="number"
                 value={newCatCommission}
                 onChange={(e) => setNewCatCommission(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div className="flex gap-2 pt-2">
               <button
                 onClick={handleAddCategory}
-                className="flex-1 py-2 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-xs"
+                className="flex-1 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 text-white rounded-xl font-bold text-xs shadow-neon-indigo"
               >
                 Add Category
               </button>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-xl font-semibold text-xs"
+                className="flex-1 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold text-xs hover:bg-slate-700 border border-slate-700/80"
               >
                 Cancel
               </button>
@@ -125,3 +133,4 @@ export const AdminCategories: React.FC = () => {
     </div>
   );
 };
+

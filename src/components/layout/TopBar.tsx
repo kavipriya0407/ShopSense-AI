@@ -1,114 +1,176 @@
 import React, { useState } from 'react';
-import { Menu, Bell, ChevronDown, User, LogOut, Settings as SettingsIcon, ShieldCheck, ShoppingCart } from 'lucide-react';
+import {
+  Menu,
+  Bell,
+  ChevronDown,
+  LogOut,
+  ShieldCheck,
+  ShoppingCart,
+  Store,
+  Search,
+  Zap,
+  CheckCircle2,
+  Database,
+} from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface TopBarProps {
   pageTitle: string;
   onToggleSidebar: () => void;
+  onOpenCommandPalette?: () => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ pageTitle, onToggleSidebar }) => {
+export const TopBar: React.FC<TopBarProps> = ({ pageTitle, onToggleSidebar, onOpenCommandPalette }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState(3);
+  const [unreadNotifications, setUnreadNotifications] = useState(2);
 
+  const isStoreMode = location.pathname.startsWith('/store');
   const isAdminMode = location.pathname.startsWith('/admin');
+  const isVendorMode = !isStoreMode && !isAdminMode;
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <header className="h-16 bg-[#0B1120]/80 backdrop-blur-xl border-b border-slate-800/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-md">
       {/* Left Title & Hamburger */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
           title="Toggle Navigation"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-2">
-          <h1 className="text-lg font-bold text-slate-800 tracking-tight">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-base sm:text-lg font-display font-extrabold text-white tracking-tight">
             {pageTitle}
           </h1>
+
+          {/* Mode Pill Badges */}
           {isAdminMode && (
-            <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-extrabold rounded-full border border-indigo-200">
-              Super-Admin
+            <span className="px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold rounded-full border border-indigo-500/40 font-mono">
+              🛡️ SUPER-ADMIN
+            </span>
+          )}
+          {isVendorMode && (
+            <span className="px-2.5 py-0.5 bg-blue-500/20 text-blue-300 text-[10px] font-extrabold rounded-full border border-blue-500/40 font-mono">
+              📊 VENDOR HUB
             </span>
           )}
         </div>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-3 sm:gap-4">
-        {/* Mode Switcher Button */}
-        <button
-          onClick={() => navigate(isAdminMode ? '/dashboard' : '/admin')}
-          className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-xs ${
-            isAdminMode
-              ? 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100'
-              : 'bg-indigo-50 text-indigo-600 border-indigo-200 hover:bg-indigo-100'
-          }`}
-        >
-          {isAdminMode ? (
-            <>
-              <ShoppingCart className="w-3.5 h-3.5" />
-              <span>Switch to Vendor View</span>
-            </>
-          ) : (
-            <>
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Switch to Admin Portal</span>
-            </>
-          )}
-        </button>
+      {/* Center / Right Controls */}
+      <div className="flex items-center gap-2 sm:gap-4">
+        {/* Command Palette Trigger */}
+        {onOpenCommandPalette && (
+          <button
+            onClick={onOpenCommandPalette}
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded-xl border border-slate-800 text-xs font-medium transition-all shadow-xs"
+          >
+            <Search className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Search or command...</span>
+            <kbd className="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded border border-slate-700 text-[10px] font-mono">
+              Ctrl+K
+            </kbd>
+          </button>
+        )}
+
+        {/* Backend & RAG Status Ping */}
+        <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-bold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-800/60">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 pulsing-dot" />
+          <span>RAG Online (14ms)</span>
+        </div>
+
+        {/* 3-Way Mode Switcher Pill */}
+        <div className="hidden sm:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+          <button
+            onClick={() => navigate('/store')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              isStoreMode
+                ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-xs'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+            title="Switch to Shopper Storefront"
+          >
+            <Store className="w-3.5 h-3.5" />
+            <span className="hidden xl:inline">Store</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/dashboard')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              isVendorMode
+                ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-xs'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+            title="Switch to Vendor Intelligence"
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            <span className="hidden xl:inline">Vendor</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/admin')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              isAdminMode
+                ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-xs'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+            title="Switch to Admin Console"
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="hidden xl:inline">Admin</span>
+          </button>
+        </div>
 
         {/* Notification Bell */}
         <button
           onClick={() => setUnreadNotifications(0)}
-          className="relative p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          className="relative p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           title="Notifications"
         >
           <Bell className="w-5 h-5" />
           {unreadNotifications > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">
+            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-[#0B1120]">
               {unreadNotifications}
             </span>
           )}
         </button>
 
         {/* Divider */}
-        <div className="h-5 w-[1px] bg-slate-200" />
+        <div className="h-5 w-[1px] bg-slate-800 hidden sm:block" />
 
         {/* Avatar Dropdown */}
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2.5 p-1 rounded-full hover:bg-slate-100 transition-colors focus:outline-none"
+            className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-800 transition-colors focus:outline-none"
           >
             <div
-              className={`w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs ${
+              className={`w-8 h-8 rounded-xl border flex items-center justify-center font-bold text-xs shadow-md ${
                 isAdminMode
-                  ? 'bg-indigo-100 text-indigo-700 border-indigo-300'
-                  : 'bg-blue-100 text-blue-700 border-blue-200'
+                  ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
+                  : 'bg-indigo-600/20 text-indigo-300 border-indigo-500/40'
               }`}
             >
               {isAdminMode ? 'SA' : 'SS'}
             </div>
-            <span className="text-xs font-semibold text-slate-700 hidden sm:inline-block">
-              {isAdminMode ? 'Super-Admin' : 'ShopSense Store'}
+            <span className="text-xs font-semibold text-slate-200 hidden sm:inline-block">
+              {isAdminMode ? 'Super-Admin' : 'ShopSense HQ'}
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
 
           {/* User Dropdown Menu */}
           {dropdownOpen && (
-            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 p-1.5 border border-slate-100 animate-in fade-in zoom-in-95 duration-100">
-              <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                <p className="text-xs font-semibold text-slate-900">
-                  {isAdminMode ? 'ShopSense Super-Admin' : 'ShopSense Store'}
+            <div className="origin-top-right absolute right-0 mt-2 w-52 rounded-2xl shadow-2xl bg-[#0F172A] z-50 p-2 border border-slate-800 animate-in fade-in zoom-in-95 duration-100 space-y-1">
+              <div className="px-3 py-2 border-b border-slate-800 mb-1">
+                <p className="text-xs font-bold text-white">
+                  {isAdminMode ? 'Super-Admin' : 'Vendor Merchant'}
                 </p>
-                <p className="text-[11px] text-slate-500 truncate">
+                <p className="text-[11px] text-slate-400 truncate">
                   {isAdminMode ? 'admin@shopsense.com' : 'vendor@shopsense.com'}
                 </p>
               </div>
@@ -116,24 +178,46 @@ export const TopBar: React.FC<TopBarProps> = ({ pageTitle, onToggleSidebar }) =>
               <button
                 onClick={() => {
                   setDropdownOpen(false);
-                  navigate(isAdminMode ? '/dashboard' : '/admin');
+                  navigate('/store');
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-indigo-400 hover:bg-indigo-950/40 rounded-xl transition-colors"
               >
-                {isAdminMode ? <ShoppingCart className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
-                <span>{isAdminMode ? 'Switch to Vendor' : 'Switch to Admin'}</span>
+                <Store className="w-4 h-4" />
+                <span>Go to Storefront</span>
               </button>
 
-              <div className="h-[1px] bg-slate-100 my-1" />
+              <button
+                onClick={() => {
+                  setDropdownOpen(false);
+                  navigate('/dashboard');
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-blue-400 hover:bg-blue-950/40 rounded-xl transition-colors"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span>Vendor Dashboard</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setDropdownOpen(false);
+                  navigate('/admin');
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-purple-400 hover:bg-purple-950/40 rounded-xl transition-colors"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>Super-Admin</span>
+              </button>
+
+              <div className="h-[1px] bg-slate-800 my-1" />
 
               <button
                 onClick={() => {
                   setDropdownOpen(false);
                   navigate('/login');
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-lg transition-colors font-medium"
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-xl transition-colors font-medium"
               >
-                <LogOut className="w-4 h-4 text-rose-500" />
+                <LogOut className="w-4 h-4" />
                 <span>Log Out</span>
               </button>
             </div>
@@ -143,3 +227,4 @@ export const TopBar: React.FC<TopBarProps> = ({ pageTitle, onToggleSidebar }) =>
     </header>
   );
 };
+
