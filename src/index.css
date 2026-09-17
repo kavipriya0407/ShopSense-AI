@@ -1,130 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-[#F8FAFC] text-slate-900 antialiased min-h-screen selection:bg-orange-500/20 selection:text-orange-900;
+    @apply bg-[#F8FAFC] text-[#0F172A] antialiased min-h-screen selection:bg-indigo-500/20 selection:text-indigo-950;
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    color: #0F172A;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.025em;
+    color: #0F172A;
+  }
+
+  p, span, label, input, select, textarea, button {
+    -webkit-font-smoothing: antialiased;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-  }
-  .font-outfit {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
   }
 
-  /* Ultra-sleek glassmorphism */
-  .glass-card {
-    background: rgba(17, 23, 38, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  /* Luxury Glassmorphic & Elevated Card Utilities */
+  .shopsense-card,
+  .lumen-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05), 0 2px 6px -2px rgba(15, 23, 42, 0.03);
+    border-radius: 1.25rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .shopsense-card:hover,
+  .lumen-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.1), 0 6px 12px -4px rgba(15, 23, 42, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .shopsense-card-flat,
+  .lumen-card-flat {
+    background: #FFFFFF;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 1.25rem;
+  }
+
+  .shopsense-dark-card,
+  .lumen-dark-card {
+    background: #0D1322;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    border-radius: 1.25rem;
+  }
+
+  .glass-dark {
+    background: rgba(13, 19, 34, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .glass-card-hover {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .glass-card-hover:hover {
-    transform: translateY(-3px);
-    border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.2);
+  .glass-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
 
-  .glass-panel {
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+  .shopsense-gradient-indigo,
+  .lumen-gradient-indigo {
+    background: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #8B5CF6 100%);
   }
 
-  .glass-input {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f8fafc;
-  }
-  .glass-input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+  .shopsense-gradient-cyan,
+  .lumen-gradient-cyan {
+    background: linear-gradient(135deg, #0284C7 0%, #06B6D4 50%, #14B8A6 100%);
   }
 
-  .mesh-gradient {
-    background: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+  .shopsense-gradient-sunset,
+  .lumen-gradient-sunset {
+    background: linear-gradient(135deg, #E11D48 0%, #F43F5E 50%, #FB923C 100%);
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .shopsense-gradient-dark,
+  .lumen-gradient-dark {
+    background: linear-gradient(135deg, #090D16 0%, #0D1322 50%, #131B2E 100%);
   }
 
-  .text-gradient-indigo {
-    background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #4338ca 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .shopsense-mesh-bg,
+  .lumen-mesh-bg {
+    background-color: #070A12;
+    background-image: 
+      radial-gradient(at 10% 20%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+      radial-gradient(at 90% 10%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+      radial-gradient(at 50% 90%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
   }
 
-  .text-gradient-cyan {
-    background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 50%, #0891b2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .text-gradient-emerald {
-    background: linear-gradient(135deg, #6ee7b7 0%, #10b981 50%, #047857 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .shopsense-subtle-mesh,
+  .lumen-subtle-mesh {
+    background-color: #F8FAFC;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.03) 0px, transparent 50%);
   }
 }
 
-/* Custom scrollbars for dashboard widgets */
+/* Custom crisp scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.4);
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94A3B8;
 }
 
-/* Custom pulsing dot animation */
+/* Sidebar specific scrollbar */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: #090D16;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 9999px;
+}
+
+/* Pulsing aura animation */
 @keyframes pulse-ring {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-.pulsing-dot {
-  animation: pulse-ring 2s infinite;
-}
-
-@keyframes pulse-ring-indigo {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
@@ -139,7 +155,17 @@
   }
 }
 
-.pulsing-dot-indigo {
-  animation: pulse-ring-indigo 2s infinite;
+.pulsing-dot {
+  animation: pulse-ring 2.2s infinite;
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-badge {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}

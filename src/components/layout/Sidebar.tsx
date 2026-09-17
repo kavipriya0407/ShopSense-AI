@@ -24,13 +24,20 @@ interface SidebarProps {
   onToggleCollapse: () => void;
 }
 
+interface NavItem {
+  label: string;
+  path: string;
+  icon: any;
+  badge?: string;
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const isAdminMode = location.pathname.startsWith('/admin');
 
-  const vendorNavItems = [
+  const vendorNavItems: NavItem[] = [
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { label: 'Analytics', path: '/analytics', icon: BarChart3 },
     { label: 'Benchmarking', path: '/benchmarking', icon: Trophy },
@@ -40,14 +47,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { label: 'AI Data Analyst', path: '/ai-data-analyst', icon: BrainCircuit, badge: 'SQL' },
   ];
 
-  const adminNavItems = [
+  const adminNavItems: NavItem[] = [
     { label: 'Admin Overview', path: '/admin', icon: ShieldCheck },
     { label: 'Vendor Accounts', path: '/admin/vendors', icon: Users },
     { label: 'Disputes & Refunds', path: '/admin/disputes', icon: AlertTriangle },
     { label: 'Global Categories', path: '/admin/categories', icon: Layers },
   ];
 
-  const currentNavItems = isAdminMode ? adminNavItems : vendorNavItems;
+  const currentNavItems: NavItem[] = isAdminMode ? adminNavItems : vendorNavItems;
 
   return (
     <aside
@@ -137,9 +144,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 {!collapsed && (
                   <div className="flex items-center justify-between w-full">
                     <span className="truncate">{item.label}</span>
-                    {item.badge && (
+                    {(item as any).badge && (
                       <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono font-bold border border-indigo-500/30">
-                        {item.badge}
+                        {(item as any).badge}
                       </span>
                     )}
                   </div>

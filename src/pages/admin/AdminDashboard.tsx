@@ -1,199 +1,430 @@
 import React from 'react';
-import { MetricCard } from '@/components/common/MetricCard';
-import { LineChartCard } from '@/components/charts/LineChartCard';
-import { BarChartCard } from '@/components/charts/BarChartCard';
-import { StatusBadge } from '@/components/common/StatusBadge';
-import { ADMIN_METRICS, MOCK_VENDORS, MOCK_DISPUTES } from '@/mock-data/adminData';
-import { ShieldCheck, UserCheck, AlertTriangle, ArrowUpRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Users,
+  Package,
+  ShoppingCart,
+  DollarSign,
+  CheckSquare,
+  ArrowUpRight,
+  TrendingUp,
+  ShieldCheck,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  ArrowRight,
+  Sparkles,
+  AlertTriangle,
+  Activity,
+  Layers,
+  ChevronRight,
+  Zap,
+} from 'lucide-react';
+import { useShopSense } from '../../context/ShopSenseContext';
+import { ADMIN_MARKETPLACE_STATS } from '../../mock-data/shopSenseData';
 
 export const AdminDashboard: React.FC = () => {
-  const platformRevenueTrend = [
-    { date: 'Week 1', revenue: 95000, commission: 9500 },
-    { date: 'Week 2', revenue: 115000, commission: 11500 },
-    { date: 'Week 3', revenue: 128000, commission: 12800 },
-    { date: 'Week 4', revenue: 147200, commission: 14720 },
-  ];
+  const navigate = useNavigate();
+  const { approvals, approveRequest, rejectRequest, vendors } = useShopSense();
 
-  const vendorGMVBreakdown = [
-    { period: 'TechGear', store: 68400, marketplace: 60000 },
-    { period: 'Apex Gaming', store: 51200, marketplace: 50000 },
-    { period: 'Urban Fashion', store: 42150, marketplace: 40000 },
-    { period: 'SoundBeat', store: 35800, marketplace: 35000 },
-    { period: 'Vendor Store', store: 24560, marketplace: 25000 },
-  ];
+  const pendingApprovals = approvals.filter((a) => a.status === 'Pending');
 
   return (
-    <div className="space-y-6">
-      {/* Admin Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl p-6 lg:p-8 bg-gradient-to-r from-slate-900 via-indigo-950/80 to-purple-950/80 border border-indigo-500/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div className="space-y-8 animate-fade-in pb-12">
+      {/* Header Banner */}
+      <div className="lumen-card p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-slate-800 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl" />
+
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1 rounded-lg bg-indigo-500/20 text-cyan-400 border border-indigo-500/30">
-              <ShieldCheck className="w-4 h-4" />
-            </span>
-            <span className="text-[11px] font-extrabold text-cyan-400 uppercase tracking-widest font-mono">
-              Super-Admin Command Nexus
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+              ShopSense Governance Matrix
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-cyan-300 text-xs font-mono font-bold">
+              SUPER-OPERATOR
             </span>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tight font-outfit">
-            Marketplace Master Administration
-          </h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-            Monitor ecosystem Gross Merchandise Value (GMV), vendor onboarding queues, automated revenue rake, and platform dispute resolutions.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Autonomous merchant oversight, cryptographic approvals, dispute resolution, and cross-chain GMV telemetry.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 relative z-10">
-          <Link
-            to="/admin/vendors"
-            className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-neon-indigo transition-all flex items-center gap-2"
+        <div className="flex items-center gap-3 relative z-10">
+          <button
+            onClick={() => navigate('/admin/approvals')}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-indigo-500/25 transition-all"
           >
-            <UserCheck className="w-4 h-4" />
-            <span>Manage 142 Vendors</span>
-          </Link>
+            <CheckSquare className="w-4 h-4" />
+            <span>Approval Queue ({pendingApprovals.length})</span>
+          </button>
         </div>
-
-        {/* Ambient background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* 5 Admin Summary Metrics */}
+      {/* MARKETPLACE STATISTICS (5 Cards) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {ADMIN_METRICS.map((metric) => (
-          <MetricCard key={metric.id} metric={metric as any} />
-        ))}
+        {/* Card 1: Total Vendors */}
+        <div className="lumen-card p-5 rounded-3xl border border-slate-800 hover:border-cyan-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              Active Merchants
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold border border-cyan-500/30">
+              <Users className="w-4 h-4" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-display font-black text-white mt-3">
+            {ADMIN_MARKETPLACE_STATS.totalVendors}
+          </h2>
+          <span className="text-[11px] font-mono font-bold text-emerald-400 flex items-center gap-1 mt-1">
+            <ArrowUpRight className="w-3 h-3" /> +14 this cycle
+          </span>
+        </div>
+
+        {/* Card 2: Total Products */}
+        <div className="lumen-card p-5 rounded-3xl border border-slate-800 hover:border-indigo-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              Catalog Registry
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold border border-indigo-500/30">
+              <Package className="w-4 h-4" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-display font-black text-white mt-3">
+            {ADMIN_MARKETPLACE_STATS.totalProducts}
+          </h2>
+          <span className="text-[11px] font-mono font-bold text-emerald-400 flex items-center gap-1 mt-1">
+            <ArrowUpRight className="w-3 h-3" /> +128 active SKUs
+          </span>
+        </div>
+
+        {/* Card 3: Total Orders */}
+        <div className="lumen-card p-5 rounded-3xl border border-slate-800 hover:border-purple-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              Dispatched Orders
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold border border-purple-500/30">
+              <ShoppingCart className="w-4 h-4" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-display font-black text-white mt-3">
+            {ADMIN_MARKETPLACE_STATS.totalOrders}
+          </h2>
+          <span className="text-[11px] font-mono font-bold text-emerald-400 flex items-center gap-1 mt-1">
+            <ArrowUpRight className="w-3 h-3" /> +21.4% GMV
+          </span>
+        </div>
+
+        {/* Card 4: Total Revenue */}
+        <div className="lumen-card p-5 rounded-3xl border border-slate-800 hover:border-emerald-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              Cleared Volume
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold border border-emerald-500/30">
+              <DollarSign className="w-4 h-4" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-display font-black text-white mt-3">
+            {ADMIN_MARKETPLACE_STATS.totalRevenue}
+          </h2>
+          <span className="text-[11px] font-mono font-bold text-emerald-400 flex items-center gap-1 mt-1">
+            <ArrowUpRight className="w-3 h-3" /> +18.2% YoY
+          </span>
+        </div>
+
+        {/* Card 5: Pending Approvals */}
+        <div className="lumen-card p-5 rounded-3xl border border-amber-500/30 hover:border-amber-500/60 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400">
+              Pending Validation
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold border border-amber-500/30">
+              <Clock className="w-4 h-4" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-display font-black text-amber-300 mt-3">
+            {pendingApprovals.length}
+          </h2>
+          <span className="text-[11px] font-mono font-bold text-amber-400 flex items-center gap-1 mt-1">
+            Queue Action Required
+          </span>
+        </div>
       </div>
 
-      {/* Line & Bar Charts */}
+      {/* SECTION 1 & 2: Vendor Performance & Product Approvals Queue */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Platform Revenue & Commission Over Time */}
-        <div className="lg:col-span-2">
-          <LineChartCard
-            title="Platform GMV & Net Commission Earned"
-            data={platformRevenueTrend}
-            lines={[
-              { key: 'revenue', name: 'Total GMV (USD)', color: '#10B981' },
-              { key: 'commission', name: 'Net Commission (USD)', color: '#6366F1' },
-            ]}
-            xAxisKey="date"
-            height={260}
-            formatYAxis={(v) => `$${v / 1000}K`}
-          />
+        {/* SECTION 1: Top Vendor Performance Ranking */}
+        <div className="lg:col-span-2 lumen-card rounded-3xl p-6 border border-slate-800 shadow-2xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+              <h2 className="text-base font-display font-bold text-white">
+                1. Merchant Node Performance Index
+              </h2>
+              <p className="text-xs text-slate-400">
+                Top grossing merchant storefronts and verified compliance tiers
+              </p>
+            </div>
+            <Link
+              to="/admin/vendors"
+              className="text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+            >
+              <span>Explore All Nodes</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-950/60 text-slate-400 font-mono font-bold uppercase tracking-wider border-y border-slate-800 text-[10px]">
+                <tr>
+                  <th className="py-3 px-3">Merchant / Storefront</th>
+                  <th className="py-3 px-3">Domain</th>
+                  <th className="py-3 px-3 text-right">SKUs</th>
+                  <th className="py-3 px-3 text-right">Gross GMV</th>
+                  <th className="py-3 px-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60">
+                {vendors.map((vend) => (
+                  <tr key={vend.id} className="hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3 px-3">
+                      <p className="font-bold text-white">{vend.name}</p>
+                      <p className="text-[10px] text-slate-500 font-mono">{vend.email}</p>
+                    </td>
+                    <td className="py-3 px-3 text-slate-300 font-medium">
+                      {vend.category}
+                    </td>
+                    <td className="py-3 px-3 text-right font-mono font-semibold text-cyan-300">
+                      {vend.productsCount}
+                    </td>
+                    <td className="py-3 px-3 text-right font-display font-black text-white">
+                      ₹{vend.revenue.toLocaleString('en-IN')}
+                    </td>
+                    <td className="py-3 px-3 text-center">
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                          vend.status === 'Verified'
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                        }`}
+                      >
+                        {vend.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Right Col: Top Vendors by GMV */}
-        <div>
-          <BarChartCard
-            title="Top Vendors by Monthly GMV"
-            data={vendorGMVBreakdown}
-            bars={[{ key: 'store', name: 'GMV ($)', color: '#A855F7' }]}
-            xAxisKey="period"
-            height={260}
-          />
-        </div>
-      </div>
-
-      {/* Tables: Vendor Applications & Platform Disputes */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Vendor Applications Queue */}
-        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        {/* SECTION 2: Product Approval Queue */}
+        <div className="lumen-card rounded-3xl p-6 border border-slate-800 shadow-2xl flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-100 tracking-tight">
-                Vendor Application Queue
-              </h3>
-              <span className="text-xs font-semibold text-amber-400 bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-500/30 font-mono">
-                5 Pending Reviews
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <div>
+                <h2 className="text-base font-display font-bold text-white">
+                  2. Listing Verification Protocol
+                </h2>
+                <p className="text-xs text-slate-400">
+                  Awaiting compliance approval
+                </p>
+              </div>
+              <span className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold">
+                {pendingApprovals.length} Pending
               </span>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead>
-                  <tr className="text-slate-400 font-semibold border-b border-slate-700/60">
-                    <th className="pb-3">Store</th>
-                    <th className="pb-3">Owner</th>
-                    <th className="pb-3 text-center">Status</th>
-                    <th className="pb-3 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60">
-                  {MOCK_VENDORS.map((v) => (
-                    <tr key={v.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3 font-bold text-white">{v.storeName}</td>
-                      <td className="py-3 text-slate-400 font-medium">{v.ownerName}</td>
-                      <td className="py-3 text-center">
-                        <StatusBadge status={v.status} />
-                      </td>
-                      <td className="py-3 text-right">
-                        <button
-                          onClick={() => alert(`Reviewing application for ${v.storeName}`)}
-                          className="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border border-indigo-500/30 rounded-lg text-xs font-semibold transition-all"
-                        >
-                          Review
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-3">
+              {approvals.slice(0, 3).map((req) => (
+                <div
+                  key={req.id}
+                  className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/30 transition-all space-y-2.5"
+                >
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={req.image}
+                      alt={req.productName}
+                      className="w-12 h-12 rounded-xl object-cover border border-slate-800 shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[9px] font-mono font-bold text-cyan-400 uppercase">
+                        {req.category}
+                      </span>
+                      <h4 className="font-bold text-xs text-white truncate">
+                        {req.productName}
+                      </h4>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-xs font-display font-black text-cyan-300">
+                          ₹{req.price.toLocaleString('en-IN')}
+                        </span>
+                        <span className="text-[10px] text-slate-500 font-mono">By {req.vendorName}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {req.status === 'Pending' ? (
+                    <div className="flex items-center gap-2 pt-2 border-t border-slate-800/80">
+                      <button
+                        onClick={() => approveRequest(req.id)}
+                        className="flex-1 py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-md"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Authorize</span>
+                      </button>
+                      <button
+                        onClick={() => rejectRequest(req.id)}
+                        className="py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 text-xs font-bold transition-all flex items-center justify-center gap-1 border border-slate-700"
+                      >
+                        <XCircle className="w-3.5 h-3.5" />
+                        <span>Reject</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono font-bold">
+                      <span className="text-slate-500">Status:</span>
+                      <span
+                        className={req.status === 'Approved' ? 'text-emerald-400' : 'text-rose-400'}
+                      >
+                        {req.status}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-800/60 mt-4 text-right">
-            <Link to="/admin/vendors" className="text-xs font-bold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1">
-              <span>View All 142 Vendors</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+          <div className="pt-4 border-t border-slate-800 mt-4 text-center">
+            <Link
+              to="/admin/approvals"
+              className="text-xs font-mono font-bold text-cyan-400 hover:underline inline-flex items-center gap-1"
+            >
+              <span>Open Global Verification Queue</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 3, 4, 5: Revenue, Customer Intelligence, and SLA Telemetry */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* SECTION 3: Revenue Analytics & Platform Commission */}
+        <div className="lumen-card rounded-3xl p-6 border border-slate-800 shadow-2xl flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm font-display font-bold text-white mb-1">
+              3. Monetization & Take-Rate Telemetry
+            </h3>
+            <p className="text-xs text-slate-400 mb-4">
+              Protocol fee retention and clearing splits
+            </p>
+
+            <div className="space-y-3 text-xs">
+              <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30">
+                <span className="text-[10px] font-mono text-cyan-300 font-bold block uppercase">Gross Marketplace Volume (GMV)</span>
+                <span className="text-2xl font-display font-black text-white block mt-1">₹4.82 Crore</span>
+              </div>
+
+              <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                <span className="text-slate-400">Platform Take Rate:</span>
+                <span className="font-mono font-bold text-cyan-300">8.5% Net</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                <span className="text-slate-400">Commission Retained:</span>
+                <span className="font-mono font-bold text-emerald-400">₹40,97,000.00</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-slate-400">Next Payout Cycle:</span>
+                <span className="font-mono font-bold text-white">15th Sep 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-3 border-t border-slate-800 mt-4">
+            <Link to="/admin/revenue" className="text-xs font-mono font-bold text-cyan-400 hover:underline">
+              Revenue Breakdown & Settlements →
             </Link>
           </div>
         </div>
 
-        {/* Platform Disputes */}
-        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        {/* SECTION 4: Customer Spending Analytics Summary */}
+        <div className="lumen-card rounded-3xl p-6 border border-slate-800 shadow-2xl flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-100 tracking-tight">
-                Platform Customer Disputes
-              </h3>
-              <AlertTriangle className="w-4 h-4 text-amber-400" />
-            </div>
+            <h3 className="text-sm font-display font-bold text-white mb-1">
+              4. Buyer Cohort Distribution
+            </h3>
+            <p className="text-xs text-slate-400 mb-4">
+              5,000 active platform accounts classified
+            </p>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead>
-                  <tr className="text-slate-400 font-semibold border-b border-slate-700/60">
-                    <th className="pb-3">Dispute ID</th>
-                    <th className="pb-3">Vendor</th>
-                    <th className="pb-3">Issue</th>
-                    <th className="pb-3 text-right">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60">
-                  {MOCK_DISPUTES.map((d) => (
-                    <tr key={d.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3 font-mono font-bold text-cyan-400">{d.id}</td>
-                      <td className="py-3 text-slate-200 font-medium truncate max-w-[100px]">{d.vendorName}</td>
-                      <td className="py-3 text-slate-400 truncate max-w-[130px]">{d.issue}</td>
-                      <td className="py-3 text-right">
-                        <StatusBadge status={d.status} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs">
+                <span className="font-bold text-emerald-300">High Value Tier (₹1L+)</span>
+                <span className="font-mono font-bold text-emerald-400">1,190 buyers (23.8%)</span>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-xs">
+                <span className="font-bold text-cyan-300">Medium Value (₹25k - ₹1L)</span>
+                <span className="font-mono font-bold text-cyan-400">1,147 buyers (22.9%)</span>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
+                <span className="font-bold text-slate-300">Entry Tier (&lt;₹25k)</span>
+                <span className="font-mono font-bold text-slate-400">2,663 buyers (53.3%)</span>
+              </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-800/60 mt-4 text-right">
-            <Link to="/admin/disputes" className="text-xs font-bold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1">
-              <span>View All Disputes</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+          <div className="pt-3 border-t border-slate-800 mt-4">
+            <Link to="/admin/customers" className="text-xs font-mono font-bold text-cyan-400 hover:underline">
+              Inspect Customer Intelligence Ledger →
             </Link>
+          </div>
+        </div>
+
+        {/* SECTION 5: Marketplace Health & SLA Telemetry */}
+        <div className="lumen-card rounded-3xl p-6 border border-slate-800 shadow-2xl flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm font-display font-bold text-white mb-1">
+              5. Network SLAs & Core Health
+            </h3>
+            <p className="text-xs text-slate-400 mb-4">
+              System uptime and dispute tolerance
+            </p>
+
+            <div className="space-y-3 text-xs">
+              <div className="flex items-center justify-between py-2 border-b border-slate-800">
+                <span className="text-slate-400 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 pulsing-dot" />
+                  RAG Vector SLA:
+                </span>
+                <span className="font-mono font-bold text-white">99.98% Nominal</span>
+              </div>
+
+              <div className="flex items-center justify-between py-2 border-b border-slate-800">
+                <span className="text-slate-400">Mean Dispatch Window:</span>
+                <span className="font-mono font-bold text-white">1.8 Days</span>
+              </div>
+
+              <div className="flex items-center justify-between py-2 border-b border-slate-800">
+                <span className="text-slate-400">Network Dispute Rate:</span>
+                <span className="font-mono font-bold text-emerald-400">0.42% (Optimal)</span>
+              </div>
+
+              <div className="flex items-center justify-between py-2">
+                <span className="text-slate-400">Grounding Verifiability:</span>
+                <span className="font-mono font-bold text-cyan-300">100% Deterministic</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-3 border-t border-slate-800 mt-4 text-slate-500 text-[11px] font-mono">
+            All 12 decentralized nodes operational.
           </div>
         </div>
       </div>
     </div>
   );
 };
-
